@@ -26,7 +26,7 @@ It is a service that controls certain types of keyboard backlights installed on 
 4. Create directory '/etc/msikeyboard/' and place file 'config.yaml' into it
 5. Copy file 'org.morozzz.MSIKeyboardService.conf' to directory '/etc/dbus-1/system.d/'
 6. Copy file 'msikeyboardd.service' to directory '/lib/systemd/system/'
-7. In root terminal (or with sudo) execute following commands:
+7. In root terminal (or with sudo) execute following commands:  
 > systemctl daemon-reload  
   systemctl reload dbus  
   systemctl enable msikeyboardd  
