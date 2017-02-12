@@ -1,0 +1,33 @@
+---
+default_index: 2
+
+handle_lid: true
+
+modes:
+    - type: 'Off'
+      config: {}
+
+    - type: Normal
+      config:
+        left: {r: 255, g: 0, b: 0}
+        middle: {r: 0, g: 255, b: 0}
+        right: {r: 0, g: 0, b: 255}
+
+    - type: Normal
+      config:
+        left: {r: 255, g: 128, b: 0}
+        middle: {r: 0, g: 255, b: 128}
+        right: {r: 128, g: 0, b: 255}
+
+    - type: Normal
+      config:
+        left: {r: 128, g: 0, b: 255}
+        middle: {r: 0, g: 255, b: 128}
+        right: {r: 255, g: 128, b: 0}
+
+    - type: DualColor
+      config:
+        color_a: {r: 0, g: 255, b: 0}
+        color_b: {r: 128, g: 0, b: 255}
+        fade_times: {r: 3, g: 3, b: 3}
+
