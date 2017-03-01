@@ -2,6 +2,8 @@
 default_index: 2
 
 handle_lid: true
+handle_sleep: true
+resume_to_connect_delay: 0.1
 
 modes:
     - type: 'Off'
@@ -24,10 +26,39 @@ modes:
         left: {r: 128, g: 0, b: 255}
         middle: {r: 0, g: 255, b: 128}
         right: {r: 255, g: 128, b: 0}
-
+    
+    - type: Gaming
+      config: {r: 0, g: 255, b: 128}
+    
     - type: DualColor
       config:
         color_a: {r: 0, g: 255, b: 0}
         color_b: {r: 128, g: 0, b: 255}
         fade_times: {r: 3, g: 3, b: 3}
 
+    - type: Breathing
+      config:
+        left:
+            color: {r: 255, g: 248, b: 0}
+            fade_times: {r: 3, g: 3, b: 3}
+        middle:
+            color: {r: 244, g: 11, b: 11}
+            fade_times: {r: 3, g: 3, b: 3}
+        right:
+            color: {r: 137, g: 44, b: 211}
+            fade_times: {r: 3, g: 3, b: 3}
+    
+    - type: Wave
+      config:
+        left:
+            color: {r: 255, g: 248, b: 0}
+            fade_times: {r: 3, g: 3, b: 3}
+        middle:
+            color: {r: 244, g: 11, b: 11}
+            fade_times: {r: 3, g: 3, b: 3}
+        right:
+            color: {r: 137, g: 44, b: 211}
+            fade_times: {r: 3, g: 3, b: 3}
+            
+    - type: Audio
+      config: {}

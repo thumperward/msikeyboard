@@ -6,6 +6,7 @@ from gi.repository import GLib
 import yaml
 import msikbapi
 import signal
+import time
 
 CONFIG_PATH = '/etc/msikeyboard/'
 CONFIG_NAME = 'config.yaml'
@@ -82,6 +83,20 @@ class NormalKeyboardMode(AbstractKeyboardMode):
         zone3 = (zone3_dict['r'], zone3_dict['g'], zone3_dict['b'])
         return cls(zone1, zone2, zone3)
 
+class GamingKeyboardMode(AbstractKeyboardMode):
+    def __init__(self, color):
+        self.color = color
+    
+    def setMode(self, keyboard_object):
+        keyboard_object.SetGamingMode(*self.color)
+        
+    def to_dict(self):
+        return {'r': self.color[0], 'g': self.color[1], 'b': self.color[2]}
+                
+    @classmethod
+    def from_dict(cls, dict):
+        color = (dict['r'], dict['g'], dict['b'])
+        return cls(color)
 
 class DualColorKeyboardMode(AbstractKeyboardMode):
     def __init__(self, first_color, second_color, color_transition_times):
@@ -107,6 +122,81 @@ class DualColorKeyboardMode(AbstractKeyboardMode):
         fade = (fade_dict['r'], fade_dict['g'], fade_dict['b'])
         return cls(colora, colorb, fade)
 
+class BreathingKeyboardMode(AbstractKeyboardMode):
+    def __init__(self, zone1_color, zone1_times, zone2_color, zone2_times, zone3_color, zone3_times):
+        self.z1_c = zone1_color
+        self.z1_t = zone1_times
+        self.z2_c = zone2_color
+        self.z2_t = zone2_times
+        self.z3_c = zone3_color
+        self.z3_t = zone3_times
+        
+    def setMode(self, keyboard_object):
+        keyboard_object.SetBreathingMode(self.z1_c, self.z1_t, self.z2_c, self.z2_t, self.z3_c, self.z3_t)
+        
+    def to_dict(self):
+        return {'left': {'color': {'r': self.z1_c[0], 'g': self.z1_c[1], 'b': self.z1_c[2]}, 'fade_times': {'r': self.z1_t[0], 'g': self.z1_t[1], 'b': self.z1_t[2]}}, 
+                'middle': {'color': {'r': self.z2_c[0], 'g': self.z2_c[1], 'b': self.z2_c[2]}, 'fade_times': {'r': self.z2_t[0], 'g': self.z2_t[1], 'b': self.z2_t[2]}}, 
+                'right': {'color': {'r': self.z3_c[0], 'g': self.z3_c[1], 'b': self.z3_c[2]}, 'fade_times': {'r': self.z3_t[0], 'g': self.z3_t[1], 'b': self.z3_t[2]}}}
+    
+    @classmethod
+    def from_dict(cls, dict):
+        z1_dict = dict['left']
+        z2_dict = dict['middle']
+        z3_dict = dict['right']
+        z1c = (z1_dict['color']['r'], z1_dict['color']['g'], z1_dict['color']['b'])
+        z1t = (z1_dict['fade_times']['r'], z1_dict['fade_times']['g'], z1_dict['fade_times']['b'])
+        z2c = (z2_dict['color']['r'], z2_dict['color']['g'], z2_dict['color']['b'])
+        z2t = (z2_dict['fade_times']['r'], z2_dict['fade_times']['g'], z2_dict['fade_times']['b'])
+        z3c = (z3_dict['color']['r'], z3_dict['color']['g'], z3_dict['color']['b'])
+        z3t = (z3_dict['fade_times']['r'], z3_dict['fade_times']['g'], z3_dict['fade_times']['b'])
+        return cls(z1c, z1t, z2c, z2t, z3c, z3t)
+
+
+class WaveKeyboardMode(AbstractKeyboardMode):
+    def __init__(self, zone1_color, zone1_times, zone2_color, zone2_times, zone3_color, zone3_times):
+        self.z1_c = zone1_color
+        self.z1_t = zone1_times
+        self.z2_c = zone2_color
+        self.z2_t = zone2_times
+        self.z3_c = zone3_color
+        self.z3_t = zone3_times
+        
+    def setMode(self, keyboard_object):
+        keyboard_object.SetWaveMode(self.z1_c, self.z1_t, self.z2_c, self.z2_t, self.z3_c, self.z3_t)
+        
+    def to_dict(self):
+        return {'left': {'color': {'r': self.z1_c[0], 'g': self.z1_c[1], 'b': self.z1_c[2]}, 'fade_times': {'r': self.z1_t[0], 'g': self.z1_t[1], 'b': self.z1_t[2]}}, 
+                'middle': {'color': {'r': self.z2_c[0], 'g': self.z2_c[1], 'b': self.z2_c[2]}, 'fade_times': {'r': self.z2_t[0], 'g': self.z2_t[1], 'b': self.z2_t[2]}}, 
+                'right': {'color': {'r': self.z3_c[0], 'g': self.z3_c[1], 'b': self.z3_c[2]}, 'fade_times': {'r': self.z3_t[0], 'g': self.z3_t[1], 'b': self.z3_t[2]}}}
+    
+    @classmethod
+    def from_dict(cls, dict):
+        z1_dict = dict['left']
+        z2_dict = dict['middle']
+        z3_dict = dict['right']
+        z1c = (z1_dict['color']['r'], z1_dict['color']['g'], z1_dict['color']['b'])
+        z1t = (z1_dict['fade_times']['r'], z1_dict['fade_times']['g'], z1_dict['fade_times']['b'])
+        z2c = (z2_dict['color']['r'], z2_dict['color']['g'], z2_dict['color']['b'])
+        z2t = (z2_dict['fade_times']['r'], z2_dict['fade_times']['g'], z2_dict['fade_times']['b'])
+        z3c = (z3_dict['color']['r'], z3_dict['color']['g'], z3_dict['color']['b'])
+        z3t = (z3_dict['fade_times']['r'], z3_dict['fade_times']['g'], z3_dict['fade_times']['b'])
+        return cls(z1c, z1t, z2c, z2t, z3c, z3t)
+        
+
+class AudioKeyboardMode(AbstractKeyboardMode):
+    def __init__(self):
+        pass
+        
+    def setMode(self, keyboard_object):
+        keyboard_object.SetAudioMode()
+        
+    def to_dict(self):
+        return {}
+        
+    @classmethod
+    def from_dict(cls, dict):
+        return cls()
 
 class MSIKeyboardService(dbus.service.Object):
     SERVICE_NAME = 'org.morozzz.MSIKeyboardService'
@@ -117,11 +207,21 @@ class MSIKeyboardService(dbus.service.Object):
     PROPS_CHANGED_SIGNAL = 'PropertiesChanged'
     UPOWER_NAME = 'org.freedesktop.UPower'
     
+    LOGIND_MANAGER_INTERFACE = 'org.freedesktop.login1.Manager'
+    SLEEP_PREPARE_SIGNAL = 'PrepareForSleep'
+    LOGIND_NAME = 'org.freedesktop.login1'
+    
+    RECONNECT_ATTEMPTS = 7
+    
     kbmodes = {
         'Off': OffKeyboardMode, 
         'Default': DefaultKeyboardMode, 
-        'Normal': NormalKeyboardMode, 
-        'DualColor': DualColorKeyboardMode
+        'Normal': NormalKeyboardMode,
+        'Gaming': GamingKeyboardMode,  
+        'DualColor': DualColorKeyboardMode, 
+        'Breathing': BreathingKeyboardMode, 
+        'Wave': WaveKeyboardMode, 
+        'Audio': AudioKeyboardMode, 
     }
     
     kbmodes_rev = {value: key for key, value in kbmodes.items()}
@@ -132,6 +232,8 @@ class MSIKeyboardService(dbus.service.Object):
         self.configfile = config_file_name
         self.isConfigChanged = False
         self.isHandleLid = False
+        self.isHandleSleep = False
+        self.resumeConnectDelay = 0.1
         self.defModeIndex = 0
         self.curModeIndex = None
         bus = dbus.SystemBus()
@@ -147,8 +249,10 @@ class MSIKeyboardService(dbus.service.Object):
             DualColorKeyboardMode((255, 0, 0), (0, 255, 0), (3, 3, 3)), 
         ]
         self.defModeIndex = 0
-        self.isHandleLid
+        self.isHandleLid = True
+        self.isHandleSleep = True
         self.isConfigChanged = True
+        self.resumeConnectDelay = 0.1
     
     def LoadDefaultConfigConditional(self):
         if self.modes:
@@ -156,6 +260,27 @@ class MSIKeyboardService(dbus.service.Object):
         else:
             print("Loading default config")
             self.LoadDefaultConfig()
+    
+    def PrepareForSleepHandler(self, isSleep):
+        # True - hibernating, False - resuming
+        if isSleep:
+            print("Suspend detected, turning off keyboard backlight and disconnecting")
+            self.SetOffModeImpl()
+            self.kb.Disconnect()
+        else:
+            print("Resume detected, reconnecting and restoring keyboard backlight")
+            isConnected = False
+            for i in range(self.RECONNECT_ATTEMPTS):
+                try:
+                    self.kb.Connect()
+                    isConnected = True
+                    break
+                except OSError:
+                    print("Connect attempt #" + str(i+1) + " failed, retrying")
+                    time.sleep(self.resumeConnectDelay)
+            if not isConnected:
+                raise OSError("Can't connect to keyboard device")
+            self.RestoreModeImpl()
     
     def PropsChangedHandler(self, source, props_dict, unused):
         if source == self.UPOWER_NAME:
@@ -176,7 +301,11 @@ class MSIKeyboardService(dbus.service.Object):
             
     def _connectPropsChangedHandler(self):
         bus = dbus.SystemBus()
-        bus.add_signal_receiver(self.PropsChangedHandler, self.PROPS_CHANGED_SIGNAL, self.PROPS_INTERFACE)
+        bus.add_signal_receiver(self.PropsChangedHandler, self.PROPS_CHANGED_SIGNAL, self.PROPS_INTERFACE, self.UPOWER_NAME)
+        
+    def _connectSleepHandler(self):
+        bus = dbus.SystemBus()
+        bus.add_signal_receiver(self.PrepareForSleepHandler, self.SLEEP_PREPARE_SIGNAL, self.LOGIND_MANAGER_INTERFACE, self.LOGIND_NAME)
     
     def LoadConfig(self):
         if self.configfile is not None:
@@ -195,6 +324,16 @@ class MSIKeyboardService(dbus.service.Object):
                         self._connectPropsChangedHandler()
                 except (KeyError, TypeError, ValueError):
                     print("Key 'handle_lid' not found or invalid, not handling lid events")
+                try:
+                    self.isHandleSleep = bool(config_dict['handle_sleep'])
+                    if self.isHandleSleep:
+                        self._connectSleepHandler()
+                except (KeyError, TypeError, ValueError):
+                    print("Key 'handle_sleep' not found or invalid, not handling sleep events")
+                try:
+                    self.resumeConnectDelay = float(config_dict['resume_to_connect_delay'])
+                except (KeyError, TypeError, ValueError):
+                    print("Key 'resume_to_connect_delay' not found or invalid, setting to default " + str(self.resumeConnectDelay) + " seconds")
                 modes_list = config_dict['modes']
                 modes = []
                 for mode_description in modes_list:
@@ -243,7 +382,7 @@ class MSIKeyboardService(dbus.service.Object):
             mode_dict = mode.to_dict()
             mode_description = {"type": mode_type_name, "config": mode_dict}
             modes_list.append(mode_description)
-        return {'modes': modes_list, 'default_index': self.defModeIndex, 'handle_lid': self.isHandleLid}
+        return {'modes': modes_list, 'default_index': self.defModeIndex, 'handle_lid': self.isHandleLid, 'handle_sleep': self.isHandleSleep, 'resume_to_connect_delay': self.resumeConnectDelay}
             
     def SaveConfig(self, Forced=False):
         if self.configfile is None:
