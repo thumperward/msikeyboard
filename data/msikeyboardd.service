@@ -4,7 +4,7 @@ Description=Keyboard backlight controlling service for MSI notebooks
 [Service]
 Type=dbus
 BusName=org.morozzz.MSIKeyboardService
-ExecStart=/usr/local/bin/msikeyboardd
+ExecStart=/usr/bin/msikeyboardd
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]

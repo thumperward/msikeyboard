@@ -1,0 +1,20 @@
+Source: msikeyboard
+Maintainer: DeD MorozZz <morozzz.g2@gmail.com>
+Section: python
+Priority: optional
+Build-Depends: debhelper, dh-python, python3-setuptools, python3-all, debhelper (>= 10)
+Standards-Version: 4.1.0
+Homepage: https://github.com/m0r0zzz/msikeyboard
+
+Package: python3-msikeyboard
+Architecture: all
+Depends: dbus, systemd, ${misc:Depends}, ${python3:Depends}
+Description: Daemon for SteelSeries keyboards on MSI notebooks
+ It is a service that controls certain types of keyboard backlights installed on
+ some MSI notebooks (e.g. MSI GT60 2PC). 
+ This keyboards usually marked with label like "Keyboard by SteelSeries".  
+ Functionality:  
+ * Configure and use some (in future - all) modes from SteelSeries app 
+   (Windows), plus some undocumented modes
+ * React on lid close/open and sleep/resume events
+

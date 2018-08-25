@@ -92,6 +92,5 @@ Available modes:
 * Expose 'plain' modes (16-28, looks like plain one-color backlight, also changes behaviour of Normal mode)
 * Explore modes 8,9 and 11-15 (8 looks like DualColor, 9 looks like Waves but this needs thorough research)
 * Move service daemon from root to less privileged system user
-* Prepare debian package 
 * Add console daemon control tool
 * Add GUI daemon control tool?

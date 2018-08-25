@@ -1,0 +1,4 @@
+#!/usr/bin/dh_install
+
+data/msikeyboardd.service /lib/systemd/system/
+data/org.morozzz.MSIKeyboardService.conf /etc/dbus-1/system.d/

@@ -5,3 +5,4 @@ __pycache__/
 .ropeproject/
 msikeyboard/__pycache__/
 *~
+.pybuild

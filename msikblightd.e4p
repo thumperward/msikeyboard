@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project msikblightd -->
-<!-- Saved: 2018-08-25, 17:56:23 -->
+<!-- Saved: 2018-08-25, 19:29:40 -->
 <!-- Copyright (C) 2018 DeD MorozZz,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -32,6 +32,13 @@
     <Other>data/config.yaml</Other>
     <Other>data/msikeyboardd.service</Other>
     <Other>data/org.morozzz.MSIKeyboardService.conf</Other>
+    <Other>debian/changelog</Other>
+    <Other>debian/compat</Other>
+    <Other>debian/control</Other>
+    <Other>debian/copyright</Other>
+    <Other>debian/install</Other>
+    <Other>debian/rules</Other>
+    <Other>debian/source/format</Other>
     <Other>setup.cfg</Other>
   </Others>
   <Vcs>

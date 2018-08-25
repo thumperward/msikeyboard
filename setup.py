@@ -29,6 +29,7 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3"
     ],
+    license = "GPL-3.0", 
     keywords = "MSI keyboard steelseries backlight", 
     packages=find_packages(),
     data_files = [("/etc/msikeyboard/",  ["data/config.yaml"])], 
