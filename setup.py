@@ -12,8 +12,8 @@ def get_long_description():
 
 setup(
     name="msikeyboard",
-    version="0.1.0",
-    description="Support library and daemon for SteelSeries keyboards on MSI notebooks",
+    version="0.1.1",
+    description="Support library and daemon for SteelSeries keyboards on MSI laptops",
     long_description=get_long_description(),
     author="DeD MorozZz",
     author_email="morozzz.g2@gmail.com",
