@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project msikblightd -->
-<!-- Saved: 2018-08-25, 19:29:40 -->
+<!-- Saved: 2018-08-25, 21:20:01 -->
 <!-- Copyright (C) 2018 DeD MorozZz,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -25,7 +25,6 @@
   <Interfaces/>
   <Others>
     <Other>.gitignore</Other>
-    <Other>LICENSE</Other>
     <Other>LICENSE.txt</Other>
     <Other>MANIFEST.in</Other>
     <Other>README.md</Other>
