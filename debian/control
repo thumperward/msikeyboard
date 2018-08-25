@@ -8,7 +8,7 @@ Homepage: https://github.com/m0r0zzz/msikeyboard
 
 Package: python3-msikeyboard
 Architecture: all
-Depends: dbus, systemd, ${misc:Depends}, ${python3:Depends}
+Depends: dbus, systemd, python3-dbus, ${misc:Depends}, ${python3:Depends}
 Description: Daemon for SteelSeries keyboards on MSI notebooks
  It is a service that controls certain types of keyboard backlights installed on
  some MSI notebooks (e.g. MSI GT60 2PC). 
