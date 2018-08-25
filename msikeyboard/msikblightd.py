@@ -2,20 +2,13 @@
 
 import dbus
 import dbus.service
-from gi.repository import GLib
 import yaml
-import msikbapi
 import signal
 import time
+from msikeyboard import msikbapi
 
 CONFIG_PATH = '/etc/msikeyboard/'
 CONFIG_NAME = 'config.yaml'
-
-GLib.threads_init()
-loop = GLib.MainLoop()
-
-from dbus.mainloop.glib import DBusGMainLoop
-DBusGMainLoop(set_as_default=True)
 
 class AbstractKeyboardMode:
     def setMode(self, keyboard_object):
@@ -478,53 +471,58 @@ class MSIKeyboardService(dbus.service.Object):
         self.SaveConfig()
         self.kb.SetOffMode()
 
+def main():
+    from dbus.mainloop.glib import DBusGMainLoop
+    from gi.repository import GLib
 
-def InitSignal(actor):
-    def signal_action(signal):
-        if signal == 1:
-            print(("Got signal SIGHUP(1)"))
-            actor.LoadConfig()
-            return
-        elif signal == 2:
-            print(("Got signal SIGINT(2)"))
-        elif signal == 15:
-            print(("Got signal SIGTERM(15)"))
-        else:
-            print(("Got unregistered signal " + str(signal)))
-            return
-        actor.OnExit()
-        loop.quit()
+    DBusGMainLoop(set_as_default=True)
+    GLib.threads_init()
+    loop = GLib.MainLoop()
+    
+    def InitSignal(actor):
+        def signal_action(signal):
+            if signal == 1:
+                print(("Got signal SIGHUP(1)"))
+                actor.LoadConfig()
+                return
+            elif signal == 2:
+                print(("Got signal SIGINT(2)"))
+            elif signal == 15:
+                print(("Got signal SIGTERM(15)"))
+            else:
+                print(("Got unregistered signal " + str(signal)))
+                return
+            actor.OnExit()
+            loop.quit()
 
-    def idle_handler(*args):
-        print("Python signal handler activated")
-        GLib.idle_add(signal_action, priority=GLib.PRIORITY_HIGH)
+        def idle_handler(*args):
+            print("Python signal handler activated")
+            GLib.idle_add(signal_action, priority=GLib.PRIORITY_HIGH)
 
-    def handler(*args):
-        print("GLib signal handler activated")
-        signal_action(args[0])
+        def handler(*args):
+            print("GLib signal handler activated")
+            signal_action(args[0])
 
-    def install_glib_handler(sig):
-        unix_signal_add = None
+        def install_glib_handler(sig):
+            unix_signal_add = None
 
-        if hasattr(GLib, "unix_signal_add"):
-            unix_signal_add = GLib.unix_signal_add
-        elif hasattr(GLib, "unix_signal_add_full"):
-            unix_signal_add = GLib.unix_signal_add_full
+            if hasattr(GLib, "unix_signal_add"):
+                unix_signal_add = GLib.unix_signal_add
+            elif hasattr(GLib, "unix_signal_add_full"):
+                unix_signal_add = GLib.unix_signal_add_full
 
-        if unix_signal_add:
-            print(("Register GLib signal handler: %r" % sig))
-            unix_signal_add(GLib.PRIORITY_HIGH, sig, handler, sig)
-        else:
-            print("Can't install GLib signal handler, too old gi.")
+            if unix_signal_add:
+                print(("Register GLib signal handler: %r" % sig))
+                unix_signal_add(GLib.PRIORITY_HIGH, sig, handler, sig)
+            else:
+                print("Can't install GLib signal handler, too old gi.")
 
-    SIGS = [getattr(signal, s, None) for s in "SIGINT SIGTERM SIGHUP".split()]
-    for sig in [_f for _f in SIGS if _f]:
-        print(("Register Python signal handler: %r" % sig))
-        signal.signal(sig, idle_handler)
-        GLib.idle_add(install_glib_handler, sig, priority=GLib.PRIORITY_HIGH)
+        SIGS = [getattr(signal, s, None) for s in "SIGINT SIGTERM SIGHUP".split()]
+        for sig in [_f for _f in SIGS if _f]:
+            print(("Register Python signal handler: %r" % sig))
+            signal.signal(sig, idle_handler)
+            GLib.idle_add(install_glib_handler, sig, priority=GLib.PRIORITY_HIGH)
 
-
-if __name__ == "__main__":
     keyboard = msikbapi.MSIKeyboard()
     service = MSIKeyboardService(keyboard, CONFIG_PATH + CONFIG_NAME)
     service.OnLoad()

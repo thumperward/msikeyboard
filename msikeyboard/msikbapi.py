@@ -139,5 +139,5 @@ class MSIKeyboard:
     def SetAudioMode(self):
         self._setMode(self.KB_MODE_AUDIO)
     
-    def __del__(self):
-        self.dev.close()
+#    def __del__(self):
+#        self.dev.close()

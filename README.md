@@ -20,21 +20,15 @@ It is a service that controls certain types of keyboard backlights installed on 
 
 ## How To Install It
 
-1. Create directory '/usr/local/lib/msikeyboard/'
-2. Place files 'msikbapi.py' and 'msikblightd.py' into newly created directory
-3. Set this files' owner as root:root and set +x flag on file 'msikblightd.py'
-4. Create directory '/etc/msikeyboard/' and place file 'config.yaml' into it
-5. Copy file 'org.morozzz.MSIKeyboardService.conf' to directory '/etc/dbus-1/system.d/'
-6. Copy file 'msikeyboardd.service' to directory '/lib/systemd/system/'
-7. In root terminal (or with sudo) execute following commands:
+1. Install this package, from wheel or using setup.py
+2. Copy file 'org.morozzz.MSIKeyboardService.conf' to directory '/etc/dbus-1/system.d/'
+3. Copy file 'msikeyboardd.service' to directory '/lib/systemd/system/'
+4. In root terminal (or with sudo) execute following commands:
 
 > systemctl daemon-reload  
   systemctl reload dbus  
   systemctl enable msikeyboardd  
   systemctl start msikeyboardd
-
-8. ???
-9. PROFIT
 
 ## How To Control It
 
@@ -97,6 +91,7 @@ Available modes:
 * Expose DualColorAdvanced mode (like DualColor, but each zone has different colors/times, msikbapi already have appropriate methods)
 * Expose 'plain' modes (16-28, looks like plain one-color backlight, also changes behaviour of Normal mode)
 * Explore modes 8,9 and 11-15 (8 looks like DualColor, 9 looks like Waves but this needs thorough research)
-* Move service daemon from root to different system user to improve security
-* Prepare Python package for PEP conformance
-* Prepare .deb package for easier installation
+* Move service daemon from root to less privileged system user
+* Prepare debian package 
+* Add console daemon control tool
+* Add GUI daemon control tool?

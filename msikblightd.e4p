@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project msikblightd -->
-<!-- Saved: 2017-02-17, 20:50:15 -->
-<!-- Copyright (C) 2017 DeD MorozZz,  -->
+<!-- Saved: 2018-08-25, 17:56:23 -->
+<!-- Copyright (C) 2018 DeD MorozZz,  -->
 <Project version="5.1">
   <Language>en_US</Language>
   <Hash>e10609575904a20bed61bf6a58c158da2ce22c3b</Hash>
@@ -13,15 +13,27 @@
   <Email></Email>
   <Eol index="0"/>
   <Sources>
-    <Source>__init__.py</Source>
-    <Source>msikbapi.py</Source>
-    <Source>msikblightd.py</Source>
+    <Source>msikeyboard/__init__.py</Source>
+    <Source>msikeyboard/__main__.py</Source>
+    <Source>msikeyboard/msikbapi.py</Source>
+    <Source>msikeyboard/msikblightd.py</Source>
+    <Source>setup.py</Source>
   </Sources>
   <Forms/>
   <Translations/>
   <Resources/>
   <Interfaces/>
-  <Others/>
+  <Others>
+    <Other>.gitignore</Other>
+    <Other>LICENSE</Other>
+    <Other>LICENSE.txt</Other>
+    <Other>MANIFEST.in</Other>
+    <Other>README.md</Other>
+    <Other>data/config.yaml</Other>
+    <Other>data/msikeyboardd.service</Other>
+    <Other>data/org.morozzz.MSIKeyboardService.conf</Other>
+    <Other>setup.cfg</Other>
+  </Others>
   <Vcs>
     <VcsType>Git</VcsType>
     <VcsOptions>

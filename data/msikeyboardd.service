@@ -4,9 +4,8 @@ Description=Keyboard backlight controlling service for MSI notebooks
 [Service]
 Type=dbus
 BusName=org.morozzz.MSIKeyboardService
-ExecStart=/usr/bin/python3 -u /usr/local/lib/msikeyboard/msikblightd.py
+ExecStart=/usr/local/bin/msikeyboardd
 ExecReload=/bin/kill -HUP $MAINPID
-WorkingDirectory=/usr/local/lib/msikeyboard/
 
 [Install]
 WantedBy=multi-user.target
