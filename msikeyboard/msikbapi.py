@@ -51,7 +51,7 @@ class MSIKeyboard:
         try:
             self.dev.send_feature_report(report, self.REPORT_ID)
         except OSError as e:
-            print("Device write failed: " + str(e))
+            print(f"Device write failed: {str(e)}")
             self.Connect()
             self.dev.send_feature_report(report, self.REPORT_ID)
             print("Device write succeeded")
