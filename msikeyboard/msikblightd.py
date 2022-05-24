@@ -269,20 +269,21 @@ class MSIKeyboardService(dbus.service.Object):
                     isConnected = True
                     break
                 except OSError:
-                    print("Connect attempt #" + str(i+1) + " failed, retrying")
+                    print(f"Connect attempt #{str(i+1)} failed, retrying")
                     time.sleep(self.resumeConnectDelay)
             if not isConnected:
                 raise OSError("Can't connect to keyboard device")
             self.RestoreModeImpl()
     
     def PropsChangedHandler(self, source, props_dict, unused):
-        if source == self.UPOWER_NAME:
-            if 'LidIsClosed' in props_dict:
-                isLidClosed = props_dict['LidIsClosed']
-                if isinstance(isLidClosed, dbus.Boolean):
-                    self.LidActionHandler(bool(isLidClosed))
-                else:
-                    print('Warning: property LidIsClosed has unusual type ' + str(type(isLidClosed)) + ", skipping signal")
+        if source == self.UPOWER_NAME and 'LidIsClosed' in props_dict:
+            isLidClosed = props_dict['LidIsClosed']
+            if isinstance(isLidClosed, dbus.Boolean):
+                self.LidActionHandler(bool(isLidClosed))
+            else:
+                print(
+                    f'Warning: property LidIsClosed has unusual type {str(type(isLidClosed))}, skipping signal'
+                )
     
     def LidActionHandler(self, isLidClosed):
         if isLidClosed is True:
@@ -302,11 +303,10 @@ class MSIKeyboardService(dbus.service.Object):
     
     def LoadConfig(self):
         if self.configfile is not None:
-            print("Loading config from file " + self.configfile)
+            print(f"Loading config from file {self.configfile}")
             try:
-                config_file = open(self.configfile, 'r')
-                config_dict = yaml.load(config_file)
-                config_file.close()
+                with open(self.configfile, 'r') as config_file:
+                    config_dict = yaml.load(config_file)
                 try:
                     self.defModeIndex = int(config_dict['default_index'])
                 except (KeyError, TypeError, ValueError):
@@ -358,15 +358,14 @@ class MSIKeyboardService(dbus.service.Object):
             except TypeError:
                 print("Invalid configuration file format: invalid block type")
             except RuntimeError as e:
-                print("Invalid configuration file: " + str(e))
+                print(f"Invalid configuration file: {str(e)}")
             except yaml.YAMLError as e:
-                print("Incorrect configuration file: " + str(e))
-            self.LoadDefaultConfigConditional()
-            return False
+                print(f"Incorrect configuration file: {str(e)}")
         else:
             print("Config file name is not set")
-            self.LoadDefaultConfigConditional()
-            return False
+
+        self.LoadDefaultConfigConditional()
+        return False
             
     def _getConfigDict(self):
         modes_list = []
@@ -387,10 +386,9 @@ class MSIKeyboardService(dbus.service.Object):
         else:
             print("Saving configuration to file '" + self.configfile + "'")
             try:
-                config_file = open(self.configfile, "w")
-                config_dict = self._getConfigDict()
-                yaml.dump(config_dict, config_file)
-                config_file.close()
+                with open(self.configfile, "w") as config_file:
+                    config_dict = self._getConfigDict()
+                    yaml.dump(config_dict, config_file)
                 print("Configuration successfully saved")
                 return True
             except (FileNotFoundError, PermissionError):
@@ -402,7 +400,7 @@ class MSIKeyboardService(dbus.service.Object):
             mode = self.modes[mode_index]
             mode.setMode(self.kb)
             self.curModeIndex = mode_index
-            print("Selected mode " + str(mode_index) + ": " + self.kbmodes_rev[type(mode)])
+            print(f"Selected mode {str(mode_index)}: {self.kbmodes_rev[type(mode)]}")
             return True
         except IndexError:
             print("Warning: Mode index '" + str(mode_index) + "' is out of range, not setting mode")
@@ -424,7 +422,10 @@ class MSIKeyboardService(dbus.service.Object):
             try:
                 mode = self.modes[self.curModeIndex]
                 mode.setMode(self.kb)
-                print("Restored mode " + str(self.curModeIndex) + ": " + self.kbmodes_rev[type(mode)])
+                print(
+                    f"Restored mode {str(self.curModeIndex)}: {self.kbmodes_rev[type(mode)]}"
+                )
+
                 return True
             except IndexError:
                 print("Warning: Last mode index '" + str(self.curModeIndex) + "' is out of range, unsetting it")
@@ -490,7 +491,7 @@ def main():
             elif signal == 15:
                 print(("Got signal SIGTERM(15)"))
             else:
-                print(("Got unregistered signal " + str(signal)))
+                print(f"Got unregistered signal {str(signal)}")
                 return
             actor.OnExit()
             loop.quit()
