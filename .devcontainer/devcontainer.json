@@ -1,0 +1,13 @@
+{
+	"name": "msikeyboard",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"extensions": [
+		"ms-python.python",
+		"sourcery.sourcery",
+		"bungcip.better-toml"
+	],
+	"postCreateCommand": "pre-commit install && poetry install",
+	"remoteUser": "vscode"
+}
